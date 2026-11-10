@@ -1,0 +1,203 @@
+/* ---------- Base / Reset ---------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --navy: #163a5a;
+  --orange: #ff8447;
+  --orange-light: #ffeee6;
+  --border: #eee;
+  --gray: #f6f7f8;
+  --text-muted: #888;
+}
+
+body {
+  font-family: "Poppins", Arial, sans-serif;
+  background: #fff;
+  color: var(--navy);
+}
+
+/* ---------- Section + Title ---------- */
+.categories {
+  max-width: 970px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+.categories__title {
+  text-align: center;
+  font-size: 32px;
+  line-height: 1.2;
+  margin-bottom: 50px;
+}
+
+/* orange underline highlight behind the word "Job" */
+.categories__title span {
+  background: linear-gradient(transparent 60%, var(--orange-light) 60%);
+}
+
+/* ---------- Grid (DESKTOP DEFAULT: 4 columns) ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* ---------- Card ---------- */
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 175px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  transition: background 0.2s;
+}
+
+.card:hover,
+.card--active {
+  background: var(--gray);
+}
+
+.card__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--orange-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--orange);          /* SVG icons use this colour via currentColor */
+}
+
+.card__icon svg {
+  width: 45%;
+  height: 45%;
+  fill: none;
+  stroke: currentColor;          /* = the orange colour above */
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* the highlighted (Accounting) card has a solid orange icon */
+.card--active .card__icon {
+  background: var(--orange);
+  color: #fff;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.card h2 {
+  font-size: 15px;
+}
+
+.card p {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+.card__arrow {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  font-size: 14px;
+}
+
+/* ---------- CTA card (orange) ---------- */
+.card--cta {
+  background: var(--orange);
+  color: #fff;
+  border-color: var(--orange);
+  justify-content: center;
+}
+
+.card--cta:hover {
+  background: #f27333;
+}
+
+.card--cta h2 {
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+.card--cta .card__arrow {
+  right: 50px;
+  bottom: 50%;
+  transform: translateY(50%);
+}
+
+/* =====================================================
+   MEDIA QUERIES  (desktop-first: max-width = "this size and smaller")
+   ===================================================== */
+
+/* Desktop/Tablet: 1920px and below -> 4 columns */
+@media screen and (max-width: 1920px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .categories__title {
+    font-size: 28px;
+  }
+}
+
+/* Mobile: 576px and below (covers 375px phones) -> 1 column, cards stacked with gaps */
+@media screen and (max-width: 576px) {
+  .categories {
+    padding: 30px 22px;
+  }
+
+  .categories__title {
+    font-size: 28px;
+    margin-bottom: 30px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;   /* 1 column */
+    gap: 26px;                    /* space between stacked cards */
+  }
+
+  .card {
+    min-height: 265px;            /* tall cards like the mobile design */
+    padding: 28px 26px;
+  }
+
+  .card__icon {
+    width: 72px;
+    height: 72px;
+    font-size: 28px;
+  }
+
+  .card--active .card__icon {
+    font-size: 36px;
+  }
+
+  .card h2 {
+    font-size: 17px;
+  }
+
+  .card p {
+    font-size: 12px;
+    margin-top: 10px;
+  }
+
+  .card__body {
+    margin-top: auto;             /* push title + jobs to the bottom of the card */
+  }
+
+  .card__arrow {
+    right: 26px;
+    bottom: 30px;                 /* line up with the "Jobs Opened" text */
+  }
+}

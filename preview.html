@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Screen Preview</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: #e5e5e5; height: 100vh; display: flex; flex-direction: column; }
+    .toolbar { background: #fff; padding: 12px 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+    button { padding: 8px 14px; border: 1px solid #ccc; background: #fff; border-radius: 6px; cursor: pointer; font-size: 14px; }
+    button.active { background: #0d99ff; color: #fff; border-color: #0d99ff; }
+    input[type=range] { flex: 1; min-width: 160px; max-width: 360px; }
+    .info { font-size: 14px; color: #555; margin-left: auto; }
+    .stage { flex: 1; overflow: auto; display: flex; justify-content: center; padding: 20px; }
+    .frame-wrap { transform-origin: top center; }
+    iframe { border: 0; background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,.2); display: block; }
+  </style>
+</head>
+<body>
+
+  <div class="toolbar">
+    <button data-w="1920">Desktop 1920</button>
+    <button data-w="1440">Laptop 1440</button>
+    <button data-w="768">Tablet 768</button>
+    <button data-w="480">Mobile 480</button>
+    <button data-w="375">Mobile 375</button>
+    <input type="range" id="slider" min="320" max="1920" value="1920">
+    <span class="info" id="info"></span>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="frame-wrap" id="wrap">
+      <iframe id="frame" src="index.html"></iframe>
+    </div>
+  </div>
+
+  <script>
+    const frame = document.getElementById('frame');
+    const wrap = document.getElementById('wrap');
+    const stage = document.getElementById('stage');
+    const slider = document.getElementById('slider');
+    const info = document.getElementById('info');
+    const buttons = document.querySelectorAll('button[data-w]');
+
+    function setWidth(w) {
+      w = Number(w);
+      const h = Math.max(stage.clientHeight - 40, 400);
+      // scale down so wide screens fit in the window (the iframe keeps its real width,
+      // so media queries still fire at the true size)
+      const available = stage.clientWidth - 40;
+      const scale = Math.min(1, available / w);
+
+      frame.style.width = w + 'px';
+      frame.style.height = (h / scale) + 'px';
+      wrap.style.transform = 'scale(' + scale + ')';
+      wrap.style.width = w + 'px';
+      wrap.style.height = (h / scale) * scale + 'px';
+
+      slider.value = w;
+      info.textContent = w + 'px (zoom ' + Math.round(scale * 100) + '%)';
+      buttons.forEach(b => b.classList.toggle('active', Number(b.dataset.w) === w));
+    }
+
+    buttons.forEach(b => b.addEventListener('click', () => setWidth(b.dataset.w)));
+    slider.addEventListener('input', () => setWidth(slider.value));
+    window.addEventListener('resize', () => setWidth(slider.value));
+    setWidth(1920);
+  </script>
+</body>
+</html>
